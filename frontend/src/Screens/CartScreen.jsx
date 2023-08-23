@@ -5,7 +5,7 @@ import { Row, Col, ListGroup, Image, Form, Button, Card, ListGroupItem } from 'r
 import { FaTrash } from 'react-icons/fa'
 import {AiOutlinePlus} from 'react-icons/ai'
 import Message from '../components/Message'
-import { addToCart, removeFromCart } from '../slices/cartSlice'
+import { addToCart, removeFromCart, incrementItem, decrementItem } from '../slices/cartSlice'
 import Meta from '../components/Meta'
 
 const CartScreen = () => {
@@ -15,19 +15,26 @@ const CartScreen = () => {
     const { cartItems } = cart;
 
     const addToCartHandler =  async (product, qty) => {
-        dispatch(addToCart({...product, qty}))
+        dispatch(addToCart({...product, qty}));
     }
 
     const removeFromCartHandler = async (id) => {
-        dispatch(removeFromCart(id))
+        if (window.confirm("Remove from cart?")){
+            dispatch(removeFromCart(id));
+        }
+        
     }
 
     const checkoutHandler = () => {
         navigate('/login?redirect=/shipping')
     }
 
-    const incrementHandler = () => {
-        alert('Incrememted')
+    const incrementHandler = async (id) => {
+        dispatch(incrementItem(id));
+    }
+
+    const decrementHandler = async (id) => {
+        dispatch(decrementItem(id));
     }
   return (
     <Row>
@@ -55,7 +62,7 @@ const CartScreen = () => {
                                     ${item.price}
                                 </Col>
                                 <Col md={1}>
-                                    <Button variant='dark' type='button'>
+                                    <Button disabled={item.qty === 1} variant='dark' type='button' onClick={() => decrementHandler(item._id)}>
                                         -
                                     </Button>
                                 </Col>
@@ -64,7 +71,7 @@ const CartScreen = () => {
                                     <Form.Control 
                                     as='select'
                                     value={item.qty}
-                                    onChange={(e) => {addToCartHandler(item, Number(e.target.value))} }>
+                                    onChange={(e) => { addToCartHandler(item, Number(e.target.value)) }}>
                                     {[...Array(item.countInStock).keys()].map((x) => (
                                         <option key={ x + 1 } value={ x + 1 }>
                                             { x + 1 }
@@ -74,13 +81,14 @@ const CartScreen = () => {
                             
                                 </Col>
                                 <Col md={1}>
-                                    <Button variant='dark' type='button' onClick={()=>incrementHandler(item)}>
+                                    <Button disabled={item.countInStock === item.qty} variant='dark' type='button' onClick={()=>incrementHandler(item._id)}>
                                         +
                                     </Button>
                                 </Col>
                                 <Col>
                                     <Button variant='light' type='button' onClick={()=> removeFromCartHandler(item._id)} >
-                                        <FaTrash/>
+                                     <FaTrash/>
+                                        
                                     </Button>
                                 </Col>
                             </Row>
@@ -96,7 +104,6 @@ const CartScreen = () => {
         <ListGroup variant='flush'>
                 <ListGroup.Item>
                     <h3>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items</h3>
-                    {/* Total Price: ${cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 ).toFixed(2)} */}
                 </ListGroup.Item>
 
                 {cartItems.length > 0 && (

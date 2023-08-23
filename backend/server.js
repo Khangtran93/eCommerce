@@ -39,6 +39,7 @@ res.send({cliendId: process.env.PAYPAL_CLIENT_ID})
 const __dirname = path.resolve(); //Set dirname to current directory
 app.use('/uploads', express.static(path.join(__dirname, '/uploads'))); //concatenate /uploads to __dirname
 
+
 app.use(notFound);
 app.use(errorHandler);
 

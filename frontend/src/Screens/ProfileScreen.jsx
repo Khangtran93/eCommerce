@@ -117,6 +117,7 @@ const ProfileScreen = () => {
                             <td></td>
                         </tr>
                     </thead>
+                    <tbody>
                         {orders.map((order, index) => (
                             <tr key={index}>
                                 <td><Link to={`/orders/${order._id}`}>
@@ -133,7 +134,7 @@ const ProfileScreen = () => {
                                 </td>
                             </tr>
                         ))}
-                    <tbody>
+                    
 
                     </tbody>
                 </Table>

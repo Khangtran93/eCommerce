@@ -93,18 +93,6 @@ const updateProduct = asyncHandler(async(req, res, next) => {
         const updatedProduct = product.save();
         res.status(201).json(updatedProduct);
     }
-    // if (product) {
-    //     product.name = req.body.name;
-    //     product.price = req.body.price;
-    //     product.description = req.body.description;
-    //     product.image = req.body.image;
-    //     product.brand = req.body.brand;
-    //     product.category = req.body.category;
-    //     product.countInStock = req.body.countInStock;
-        
-    //     const updatedProduct = product.save();
-    //     res.status(200).json(updatedProduct)
-    // }
     else {
         res.status(404);
         throw new Error("Product not found when retrieve")

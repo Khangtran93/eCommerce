@@ -34,7 +34,7 @@ const Header = () => {
     <Navbar bg="dark" variant='dark' expand='lg' collapseOnSelect style={{padding: "1rem"}}>
         <Container>
         <LinkContainer to='/'>
-            <Navbar.Brand >Playtech</Navbar.Brand>
+            <Navbar.Brand >playTech</Navbar.Brand>
         </LinkContainer>
             
           <Navbar.Toggle aria-controls='basic-navbar-nav'/>
